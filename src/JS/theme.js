@@ -5,27 +5,34 @@ const Theme = {
   DARK: "dark-theme",
 };
 
-if (localStorage.getItem("Theme") === "DARK") {
-  refs.bodyRef.classList.add(Theme.DARK);
+const STORAGE_THEME = "selected-theme";
+
+if (localStorage.getItem(STORAGE_THEME) === Theme.DARK) {
+  chengeTheme(Theme.LIGHT, Theme.DARK);
   refs.themeRef.setAttribute("checked", true);
+} else {
+  chengeTheme(Theme.DARK, Theme.LIGHT);
 }
+// if (localStorage.getItem(STORAGE_THEME) === Theme.DARK) {
+//   refs.bodyRef.classList.add(Theme.DARK);
+//   refs.themeRef.setAttribute("checked", true);
+// } else {
+//   refs.bodyRef.classList.add(Theme.LIGHT);
+// }
 
 refs.themeRef.addEventListener("click", onChangeTheme);
 
 function onChangeTheme(e) {
-  if (refs.bodyRef.classList.contains(Theme.LIGHT)) {
-    refs.bodyRef.classList.remove(Theme.LIGHT);
-    refs.bodyRef.classList.add(Theme.DARK);
-    refs.themeRef.setAttribute("checked", true);
-    localStorage.setItem("Theme", "DARK");
-  } else if (refs.bodyRef.classList.contains(Theme.DARK)) {
-    refs.bodyRef.classList.remove(Theme.DARK);
-    refs.bodyRef.classList.add(Theme.LIGHT);
-    refs.themeRef.setAttribute("checked", false);
-    localStorage.setItem("Theme", "LIGHT");
+  if (e.target.checked) {
+    chengeTheme(Theme.LIGHT, Theme.DARK);
   } else {
-    refs.bodyRef.classList.add(Theme.DARK);
-    localStorage.setItem("Theme", "DARK");
-    refs.themeRef.setAttribute("checked", true);
+    chengeTheme(Theme.DARK, Theme.LIGHT);
   }
+}
+
+function chengeTheme(oldTheme, newTheme) {
+  refs.bodyRef.classList.remove(oldTheme);
+  refs.bodyRef.classList.add(newTheme);
+
+  localStorage.setItem(STORAGE_THEME, newTheme);
 }
